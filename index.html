@@ -42,8 +42,8 @@
         }
 
         async function selectRandomSongs() {
-            const playlistId = 'YOUR_SPOTIFY_PLAYLIST_ID';
-            const token = 'YOUR_SPOTIFY_ACCESS_TOKEN'; // Replace with your actual access token
+            const playlistId = 'c0eb7edda15746078bdc9fac0669a2fb';
+            const token = '4e3841cce0bd46b58f162bc6314c280a'; // Replace with your actual access token
             const songs = await getSpotifySongs(playlistId, token);
             selectRandomSongs(songs, 5);
         }
