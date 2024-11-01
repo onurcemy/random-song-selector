@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Song Selector</title>
+</head>
+<body>
+    <h1>Random Song Selector</h1>
+    <button onclick="selectRandomSongs()">Select Songs</button>
+    <ul id="songList"></ul>
+
+    <script>
+        async function getSpotifySongs(playlistId, token) {
+            const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            return data.items.map(item => item.track.name);
+        }
+
+        function selectRandomSongs(songList, numSongs = 5) {
+            const selectedSongs = [];
+            while (selectedSongs.length < numSongs && songList.length > 0) {
+                const randomIndex = Math.floor(Math.random() * songList.length);
+                selectedSongs.push(songList[randomIndex]);
+                songList.splice(randomIndex, 1);
+            }
+            displaySongs(selectedSongs);
+        }
+
+        function displaySongs(songs) {
+            const songListElement = document.getElementById('songList');
+            songListElement.innerHTML = '';
+            songs.forEach(song => {
+                const listItem = document.createElement('li');
+                listItem.textContent = song;
+                songListElement.appendChild(listItem);
+            });
+        }
+
+        async function selectRandomSongs() {
+            const playlistId = 'YOUR_SPOTIFY_PLAYLIST_ID';
+            const token = 'YOUR_SPOTIFY_ACCESS_TOKEN'; // Replace with your actual access token
+            const songs = await getSpotifySongs(playlistId, token);
+            selectRandomSongs(songs, 5);
+        }
+    </script>
+</body>
+</html>
